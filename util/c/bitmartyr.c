@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern Direction bitmartyr_main(Health, Coordinate);
+extern Action bitmartyr_main(Health);
 
 #undef main
 
@@ -18,41 +18,34 @@ static Unit units[25];
 
 int main(int argc, char *argv[])
 {
-    Coordinate pos;
-    Health health;
+    int rand_int;
+    int i;
 
-    int i,m;
+    scanf("%d", &rand_int);
 
-    scanf("%d",&health);
-    scanf("%d",&pos.x);
-    scanf("%d",&pos.y);
+    srand(rand_int);
 
-    units[12].health = health;
-    units[12].allegiance = SELF;
-
-    for (i = 0; i < 25; ++i) {
-        if (i != 12) {
+    while (!feof(stdin)) {
+        for (i = 0; i < 25; ++i) {
             int val;
             scanf("%d",&val);
 
             if (val > 0) {
                 units[i].health = val;
-                units[i].allegiance = ENEMY;
+                units[i].allegiance = FRIEND;
             } else if (val < 0) {
                 units[i].health = -val;
-                units[i].allegiance = FRIEND;
+                units[i].allegiance = ENEMY;
             } else {
                 units[i].allegiance = NONE;
             }
         }
+        units[12].allegiance = SELF;
+
+        printf("%d",bitmartyr_main(units[12].health));
     }
 
-    scanf("%d",&i);
-    scanf("%d",&m);
-
-    srand(i);
-
-    return (int)bitmartyr_main(health,pos);
+    return 0;
 }
 
 int uniform_random(int min, int max)
@@ -71,8 +64,8 @@ int get_relationship(int dx, int dy)
 {
     Unit u = get_unit(dx, dy);
     if (u.allegiance == FRIEND || u.allegiance == SELF) 
-        return -u.health;
-    if (u.allegiance == ENEMY)
         return u.health;
+    if (u.allegiance == ENEMY)
+        return -u.health;
     return 0;
 }

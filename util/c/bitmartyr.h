@@ -9,8 +9,7 @@
 #ifndef BITMARTYR_H
 #define BITMARTYR_H
 
-typedef enum Direction { UP = 1, LEFT = 4, DOWN = 3, RIGHT = 2 } Direction;
-typedef struct Coordinate { int x,y; } Coordinate;
+typedef enum Action { STAY = 0, UP = 1, LEFT = 4, DOWN = 3, RIGHT = 2, DIE = 5 } Action;
 typedef int Health;
 typedef enum Allegiance { NONE = 0, FRIEND, ENEMY, SELF } Allegiance;
 typedef struct Unit { Health health; Allegiance allegiance; } Unit;
@@ -25,6 +24,6 @@ Unit get_unit(int dx, int dy);
  * relative coordinate specified as received on input. */
 int get_relationship(int dx, int dy);
 
-#define main(health, pos) bitmartyr_main(health, pos)
+#define main(health) bitmartyr_main(health)
 
 #endif /* BITMARTYR_H */

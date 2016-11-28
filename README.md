@@ -113,11 +113,11 @@ binaries shall be placed within the bin directory.
 
 There are a number of execution parameters. They are:
 
- - Width: The width of the playing field (-w, --width)
- - Height: The height of the playing field
- - Scale: The scaling factor to use when rendering
- - Initial Population: How many units to spawn on setup
- - Duration: How many turns to run
+ - Width: The width of the playing field (-w)
+ - Height: The height of the playing field (-h)
+ - Scale: The scaling factor to use when rendering (-s)
+ - Initial Population: How many units to spawn on setup (-p)
+ - Duration: How many turns to run (-d)
 
 They are provided on the command line. After that the directory names for the
 AI's will be specified in order. The colours given to AIs are set in the
