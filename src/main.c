@@ -428,9 +428,9 @@ int get_unit_relationship(struct GameState *state, int x, int y, int team)
 {
     struct Unit u;
     while (x < 0) x += state->width; 
-    while (x > state->width) x += state->width;
+    while (x > state->width) x -= state->width;
     while (y < 0) y += state->height;
-    while (y > state->height) y += state->height;
+    while (y > state->height) y -= state->height;
 
     u = state->units[y * state->width + x];
 
