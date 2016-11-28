@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
 
             if (val > 0) {
                 units[i].health = val;
-                units[i].allegiance = FRIEND;
+                units[i].allegiance = ENEMY;
             } else if (val < 0) {
                 units[i].health = -val;
-                units[i].allegiance = ENEMY;
+                units[i].allegiance = FRIEND;
             } else {
                 units[i].allegiance = NONE;
             }
@@ -71,8 +71,8 @@ int get_relationship(int dx, int dy)
 {
     Unit u = get_unit(dx, dy);
     if (u.allegiance == FRIEND || u.allegiance == SELF) 
-        return u.health;
-    if (u.allegiance == ENEMY)
         return -u.health;
+    if (u.allegiance == ENEMY)
+        return u.health;
     return 0;
 }

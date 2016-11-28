@@ -9,7 +9,7 @@
 #ifndef BITMARTYR_H
 #define BITMARTYR_H
 
-typedef enum Direction { UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4 } Direction;
+typedef enum Direction { UP = 1, LEFT = 4, DOWN = 3, RIGHT = 2 } Direction;
 typedef struct Coordinate { int x,y; } Coordinate;
 typedef int Health;
 typedef enum Allegiance { NONE = 0, FRIEND, ENEMY, SELF } Allegiance;

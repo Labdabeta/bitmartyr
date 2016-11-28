@@ -1,0 +1,10 @@
+*.bmp
+*.swp
+*.swo
+*.o
+*.ali
+b~*
+*.ai
+*.log
+*.mp4
+*.png
