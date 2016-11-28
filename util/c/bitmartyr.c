@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern Action bitmartyr_main(void);
+extern Action bitmartyr_main(int);
 
 #undef main
 
@@ -19,11 +19,15 @@ static Unit units[25];
 int main(int argc, char *argv[])
 {
     int rand_int;
+    int turn_number;
     int i,x,y;
 
     scanf("%d", &rand_int);
-
     srand(rand_int);
+    
+    // Consume rand max
+    scanf("%*d");
+    scanf("%d", &turn_number);
 
     while (!feof(stdin)) {
         for (i = 0; i < 25; ++i) {
@@ -54,7 +58,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        printf("%d",bitmartyr_main());
+        printf("%d",bitmartyr_main(turn_number));
     }
 
     return 0;

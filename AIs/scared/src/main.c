@@ -1,6 +1,6 @@
 #include "bitmartyr.h"
 
-Action main() 
+Action main(int turn) 
 {
     // Danger Levels
     int up, down, left, right;

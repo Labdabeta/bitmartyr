@@ -241,8 +241,8 @@ void run_game(int width, int height, int scale, int init_pop, int duration,
     }
 cleanup:
 
-    // Clean up SDL systems
-    close_sdl_systems(wnd, ren);
+    // Clean up SDL systems TODO: find out why this causes segfault
+    //close_sdl_systems(wnd, ren);
 
     // Clean up game systems, and print winner, etc
     close_game_systems(state);
@@ -428,10 +428,10 @@ void apply_next_units(struct GameState *state)
 int get_unit_relationship(struct GameState *state, int x, int y, int team)
 {
     struct Unit u;
-    while (x < 0) x += state->width; 
-    while (x > state->width) x -= state->width;
-    while (y < 0) y += state->height;
-    while (y > state->height) y -= state->height;
+    while (x < 0) x += state->width - 1; 
+    while (x >= state->width) x -= state->width;
+    while (y < 0) y += state->height - 1;
+    while (y >= state->height) y -= state->height;
 
     u = state->units[y * state->width + x];
 
@@ -477,10 +477,10 @@ void apply_action(struct GameState *state, int x, int y, int dir)
     }
 
 
-    if (newx < 0) newx += state->width;
-    if (newx > state->width) newx -= state->width;
-    if (newy < 0) newy += state->height;
-    if (newy > state->height) newy -= state->height;
+    if (newx < 0) newx += state->width - 1;
+    if (newx >= state->width) newx -= state->width;
+    if (newy < 0) newy += state->height - 1;
+    if (newy >= state->height) newy -= state->height;
 
     index = y * state->width + x;
     newindex = newy * state->width + newx;

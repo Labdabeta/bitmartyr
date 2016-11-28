@@ -4,6 +4,7 @@
  * Utilities for bitmartyr AI play.
  *
  * To use this header provide your own main() function which returns an Action.
+ * Your main shall take one int value, the current turn number.
  ******************************************************************************/
 #ifndef BITMARTYR_H
 #define BITMARTYR_H
@@ -26,6 +27,6 @@ int uniform_random(int min, int max);
 /* Returns the unit at the relative coordinate specified. */
 Unit get_unit(int dx, int dy);
 
-#define main(...) bitmartyr_main(void)
+#define main(X) bitmartyr_main(X)
 
 #endif /* BITMARTYR_H */
