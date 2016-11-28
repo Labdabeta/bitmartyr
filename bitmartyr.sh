@@ -51,7 +51,7 @@ do
     make
     PROGRAMS[$PROG_INDEX]="./AIs/$exe/bin/$(make name)"
     # TODO: this test isn't working well, find something that will
-    if [ -f "${PROGRAMS[$PROG_INDEX]}" ]; then
+    if ${PROGRAMS[$PROG_INDEX]}; then
         echo "Could not locate ${PROGRAMS[$PROG_INDEX]}."
         exit 1
     fi
