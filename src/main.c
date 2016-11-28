@@ -231,20 +231,21 @@ void run_game(int width, int height, int scale, int init_pop, int duration,
 
     // Render turn 0
     if (render_game_state(wnd, ren, state, outname, 0))
-        return; // User quit the game
+        goto cleanup; // User quit the game
 
     // Run the game
     for (turn_number = 0; turn_number < duration; ++turn_number) {
         step_game_systems(state, ais, is_basic, turn_number);
         if (render_game_state(wnd, ren, state, outname, turn_number + 1))
-            return; // User quit the game
+            goto cleanup; // User quit the game
     }
-
-    // Clean up game systems, and print winner, etc
-    close_game_systems(state);
+cleanup:
 
     // Clean up SDL systems
     close_sdl_systems(wnd, ren);
+
+    // Clean up game systems, and print winner, etc
+    close_game_systems(state);
 }
 
 struct GameState *init_game_systems(int width, int height, int init_pop, int num_ais)

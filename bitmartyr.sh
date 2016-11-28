@@ -50,9 +50,8 @@ do
     cd $exe
     make
     PROGRAMS[$PROG_INDEX]="./AIs/$exe/bin/$(make name)"
-    # TODO: this test isn't working well, find something that will
-    if ${PROGRAMS[$PROG_INDEX]}; then
-        echo "Could not locate ${PROGRAMS[$PROG_INDEX]}."
+    if [ ! -f "bin/$(make name)" ]; then
+        echo "Could not locate bin/$(make name)."
         exit 1
     fi
     PROG_INDEX=$((PROG_INDEX+1))
