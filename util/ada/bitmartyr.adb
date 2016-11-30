@@ -20,7 +20,7 @@ package body BitMartyr is
         return Units (Delta_X, Delta_Y);
     end Get_Unit;
 
-    procedure Run (My_AI : in AI) is
+    procedure Run is
         Turn_Number : Integer;
         Random_Value : Integer;
         Relation : Relationship;
@@ -82,7 +82,7 @@ package body BitMartyr is
                 end loop;
             end loop;
 
-            case My_AI (Turn_Number) is
+            case AI (Turn_Number) is
                 when STAY => Ada.Text_IO.Put (".");
                 when UP => Ada.Text_IO.Put ("^");
                 when DOWN => Ada.Text_IO.Put ("v");

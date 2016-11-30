@@ -34,7 +34,7 @@ package BitMartyr is
         Delta_Y : in Relative_Coordinate)
         return Unit;
 
-    type AI is access function (Turn_Number : in Integer) return Action;
-
-    procedure Run (My_AI : in AI);
+    generic 
+        with function AI (Turn_Number : in Integer) return Action;
+    procedure Run;
 end BitMartyr;
