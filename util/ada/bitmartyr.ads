@@ -16,7 +16,7 @@ package BitMartyr is
 
     type Unit is
         record
-            Health : Healthiness;
+            Health, Previous_Health : Healthiness;
             Relation : Relationship;
             Team : Allegiance;
             

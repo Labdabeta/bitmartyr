@@ -10,3 +10,4 @@ b~*
 *.png
 bitmartyr
 bitmartyr.exe
+**/bin/**

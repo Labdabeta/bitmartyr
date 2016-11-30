@@ -64,21 +64,23 @@ package body BitMartyr is
                 for dx in Relative_Coordinate'Range loop
                     Relationship_Text_IO.Get (Relation);
 
+                    Units (dx, dy).Relation := Relation;
+                    Units (dx, dy).Health := Healthiness (abs Relation);
                     if Relation > 0 then
-                        Units (dx, dy).Health := Healthiness (Relation);
-                        if dy = dx then
+                        if dy = 0 and dx = 0 then
                             Units (dx, dy).Team := SELF;
                         else
                             Units (dx, dy).Team := FRIEND;
                         end if;
                     elsif Relation < 0 then
-                        Units (dx, dy).Health := Healthiness (-Relation);
                         Units (dx, dy).Team := ENEMY;
                     else
-                        Units (dx, dy).Health := 0;
                         Units (dx, dy).Team := NONE;
                     end if;
 
+                    if Relation /= 0 then
+                        Units (dx, dy).Previous_Health := Units (dx, dy).Health;
+                    end if;
                 end loop;
             end loop;
 

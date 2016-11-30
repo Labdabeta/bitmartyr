@@ -11,8 +11,11 @@ DURATION=1000
 OUTFILE=
 declare -a PROGRAMS
 
-while getopts "w:h:s:p:d:f:" opt; do
+while getopts "?w:h:s:p:d:f:" opt; do
     case "$opt" in
+        '?')
+            echo "$0 [-w WIDTH] [-h HEIGHT] [-s SCALE] [-p POPULATION] [-d DURATION] [-f OUTFILE]"
+            ;;
         w)
             WIDTH=$OPTARG
             ;;

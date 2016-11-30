@@ -56,6 +56,8 @@ int main(int argc, char *argv[])
             int val;
             scanf("%d",&val);
 
+            units[i].relationship = val;
+
             if (val > 0) {
                 units[i].health = val;
                 units[i].allegiance = FRIEND;
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
                 units[i].health = -val;
                 units[i].allegiance = ENEMY;
             } else {
+                units[i].health = 0;
                 units[i].allegiance = NONE;
             }
         }
