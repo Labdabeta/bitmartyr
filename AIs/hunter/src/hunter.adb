@@ -2,7 +2,7 @@ with BitMartyr; use BitMartyr;
 
 procedure Hunter is
     --  Like a short-ranged scared
-    function Timid_AI (Turn_Number : in Integer) return Action is
+    function Timid_AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
 
         Best : Integer := 10000;
@@ -32,7 +32,7 @@ procedure Hunter is
     end Timid_AI;
 
     --  So scared that empty tiles freak them out
-    function Paranoid_AI (Turn_Number : in Integer) return Action is
+    function Paranoid_AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
         Check : Unit;
 
@@ -83,7 +83,7 @@ procedure Hunter is
     end Paranoid_AI;
 
     --  Ripped directly from scared
-    function Scared_AI (Turn_Number : in Integer) return Action is
+    function Scared_AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
         Check : Unit;
 
@@ -124,7 +124,7 @@ procedure Hunter is
         return Best_Directions (Uniform_Random (1, Num_Best));
     end Scared_AI;
 
-    function AI (Turn_Number : in Integer) return Action is
+    function AI return Action is
         Best_Target_Health : Integer := -1;
         Best_Target_Direction : Direction;
 
@@ -146,10 +146,10 @@ procedure Hunter is
             return Best_Target_Direction;
         end if;
 
-        case Turn_Number mod 3 is
-            when 0 => return Scared_AI (Turn_Number);
-            when 1 => return Paranoid_AI (Turn_Number);
-            when others => return Timid_AI (Turn_Number);
+        case Uniform_Random (1, 100) mod 3 is
+            when 0 => return Scared_AI;
+            when 1 => return Paranoid_AI;
+            when others => return Timid_AI;
         end case;
     end AI;
     procedure Run_AI is new Run (AI => AI);

@@ -2,7 +2,7 @@ with BitMartyr; use BitMartyr;
 
 procedure Timid is
     --  Like a short-ranged scared
-    function Timid_AI (Turn_Number : in Integer) return Action is
+    function Timid_AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
 
         Best : Integer := 10000;

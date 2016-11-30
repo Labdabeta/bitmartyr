@@ -1,7 +1,7 @@
 with BitMartyr; use BitMartyr;
 
 procedure Scared is 
-    function AI (Turn_Number : in Integer) return Action is
+    function AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
         Check : Unit;
 

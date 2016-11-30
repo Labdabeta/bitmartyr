@@ -3,17 +3,6 @@
 
 int main(int argc, char *argv[])
 {
-    int rand_int, rand_max, turn_number;
-
-    scanf("%d", &rand_int);
-    scanf("%d", &rand_max);
-    scanf("%d", &turn_number);
-
-    fprintf(stderr, "Random value: %d/%d\nTurn number: %d\n", 
-            rand_int, rand_max, turn_number);
-
-    srand(rand_int);
-
     while (!feof(stdin)) {
         int y;
         for (y = 0; y < 5; ++y) {
@@ -30,6 +19,7 @@ int main(int argc, char *argv[])
         
         // Make a random move
         printf("%d", rand()%6);
+        fflush(0);
     }
 
     return 0;

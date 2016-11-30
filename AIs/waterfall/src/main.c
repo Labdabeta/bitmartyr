@@ -1,6 +1,6 @@
 #include "bitmartyr.h"
 
-Action main(int turn)
+Action main(void)
 {
     int myhealth = get_unit(0, 0).health;
 

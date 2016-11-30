@@ -21,8 +21,6 @@ package body BitMartyr is
     end Get_Unit;
 
     procedure Run is
-        Turn_Number : Integer;
-        Random_Value : Integer;
         Relation : Relationship;
     begin
         --  Create links between units.
@@ -54,10 +52,7 @@ package body BitMartyr is
             end loop;
         end loop;
 
-        Ada.Integer_Text_IO.Get (Random_Value);
-        Ada.Numerics.Float_Random.Reset (Seed, Random_Value);
-        Ada.Integer_Text_IO.Get (Random_Value);
-        Ada.Integer_Text_IO.Get (Turn_Number);
+        Ada.Numerics.Float_Random.Reset (Seed);
 
         loop
             for dy in Relative_Coordinate'Range loop
@@ -84,7 +79,7 @@ package body BitMartyr is
                 end loop;
             end loop;
 
-            case AI (Turn_Number) is
+            case AI is
                 when STAY => Ada.Text_IO.Put (".");
                 when UP => Ada.Text_IO.Put ("^");
                 when DOWN => Ada.Text_IO.Put ("v");
@@ -92,6 +87,8 @@ package body BitMartyr is
                 when RIGHT => Ada.Text_IO.Put (">");
                 when DIE => Ada.Text_IO.Put ("*");
             end case;
+
+            Ada.Text_IO.Flush;
 
         end loop;
     exception

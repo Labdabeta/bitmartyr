@@ -2,8 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-extern Action bitmartyr_main(int);
+extern Action bitmartyr_main(void);
 
 #undef main
 
@@ -18,16 +19,8 @@ static Unit units[25];
 
 int main(int argc, char *argv[])
 {
-    int rand_int;
-    int turn_number;
     int i,x,y;
-
-    scanf("%d", &rand_int);
-    srand(rand_int);
-    
-    // Consume rand max
-    scanf("%*d");
-    scanf("%d", &turn_number);
+    srand(time(NULL));
 
     // Create links
     for (y = -2; y < 3; ++y) {
@@ -71,7 +64,8 @@ int main(int argc, char *argv[])
         }
         units[12].allegiance = SELF;
 
-        printf("%d",bitmartyr_main(turn_number));
+        printf("%d",bitmartyr_main());
+        fflush(NULL);
     }
 
     return 0;

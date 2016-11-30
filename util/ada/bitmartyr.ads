@@ -35,6 +35,6 @@ package BitMartyr is
         return Unit;
 
     generic 
-        with function AI (Turn_Number : in Integer) return Action;
+        with function AI return Action;
     procedure Run;
 end BitMartyr;

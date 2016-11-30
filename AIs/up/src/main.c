@@ -1,6 +1,6 @@
 #include "bitmartyr.h"
 
-Action main(int turn)
+Action main(void)
 {
     return UP;
 }

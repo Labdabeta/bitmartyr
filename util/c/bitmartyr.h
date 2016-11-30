@@ -4,7 +4,6 @@
  * Utilities for bitmartyr AI play.
  *
  * To use this header provide your own main() function which returns an Action.
- * Your main shall take one int value, the current turn number.
  ******************************************************************************/
 #ifndef BITMARTYR_H
 #define BITMARTYR_H

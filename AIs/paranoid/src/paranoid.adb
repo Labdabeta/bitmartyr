@@ -2,7 +2,7 @@ with BitMartyr; use BitMartyr;
 
 procedure Paranoid is
     --  So scared that empty tiles freak them out
-    function Paranoid_AI (Turn_Number : in Integer) return Action is
+    function Paranoid_AI return Action is
         Danger : array (Direction) of Integer := (others => 0);
         Check : Unit;
 
