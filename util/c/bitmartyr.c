@@ -29,6 +29,28 @@ int main(int argc, char *argv[])
     scanf("%*d");
     scanf("%d", &turn_number);
 
+    // Create links
+    for (y = -2; y < 3; ++y) {
+        for (x = -2; x < 3; ++x) {
+            if (y > -2) 
+                units[(y+2)*5+x+2].up = &units[(y+1)*5+x+2]; 
+            else 
+                units[(y+2)*5+x+2].up = NULL;
+            if (y < 2) 
+                units[(y+2)*5+x+2].down = &units[(y+3)*5+x+2];
+            else
+                units[(y+2)*5+x+2].down = NULL;
+            if (x > -2) 
+                units[(y+2)*5+x+2].left = &units[(y+2)*5+x+1];
+            else
+                units[(y+2)*5+x+2].left = NULL;
+            if (x < 2) 
+                units[(y+2)*5+x+2].right = &units[(y+2)*5+x+3];
+            else
+                units[(y+2)*5+x+2].right = NULL;
+        }
+    }
+
     while (!feof(stdin)) {
         for (i = 0; i < 25; ++i) {
             int val;
@@ -43,20 +65,8 @@ int main(int argc, char *argv[])
             } else {
                 units[i].allegiance = NONE;
             }
-
-            units[i].up = units[i].left = units[i].down = units[i].right = NULL;
         }
         units[12].allegiance = SELF;
-
-        // Create links
-        for (y = -2; y < 3; ++y) {
-            for (x = -2; x < 3; ++x) {
-                if (y > -2) units[(y+2)*5+x+2].up = &units[(y+1)*5+x+2];
-                if (y < 2) units[(y+2)*5+x+2].down = &units[(y+3)*5+x+2];
-                if (x > -2) units[(y+2)*5+x+2].left = &units[(y+2)*5+x+1];
-                if (x < 2) units[(y+2)*5+x+2].right = &units[(y+2)*5+x+3];
-            }
-        }
 
         printf("%d",bitmartyr_main(turn_number));
     }

@@ -48,7 +48,7 @@ PROG_INDEX=0
 for exe in "$@"
 do
     cd $exe
-    make
+    make >/dev/null 2>&1
     PROGRAMS[$PROG_INDEX]="./AIs/$exe/bin/$(make name)"
     if [ ! -f "bin/$(make name)" ]; then
         echo "Could not locate bin/$(make name)."
