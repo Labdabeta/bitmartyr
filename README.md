@@ -51,10 +51,6 @@ Indicates two allies in position UP from you, one with health of 2, one with
 health of 1. One enemy directly LEFT from you, with 4 health. An enemy LEFT and
 DOWN from you with 3 health. Yourself, in the center, with 3 health.
 
-Before the relative surroundings have been transmitted, you will receive three
-more integers. The first is a random number, the second is the maximum value
-said random number could take, the third is the current turn number.
-
 After the fact your executable may indicate what it wants the unit to do in two
 ways. It may either produce the desired direction on standard output using any
 of the [output formats](#output-formats). Otherwise it may choose to return a system status code as
@@ -67,10 +63,9 @@ is still a valid basic format executable!
 ### Standard Format (recommended)
 
 The standard format is recommended since it is far more efficient. In standard
-format your AI will first receive the three common integers (random value,
-maximum random value, turn number) on standard input. After that it will
-continuously receive sets of 25 numbers indicating a unit as in the basic
-format. This list's end will be indicated by the end of standard input.
+format your AI will continuously receive sets of 25 numbers indicating a unit as
+in the basic format. This list's end will be indicated by the end of standard
+input.
 
 As output, an executable in standard format shall produce a series of outputs in
 any output format each corresponding to the provided units in order.
