@@ -24,4 +24,8 @@ typedef Action (*AI_Callback)(Environment, void *);
  * It is up to the caller to ensure enough data is available for each team. */
 void step(GameState *game, AI_Callback ai, void **data);
 
+typedef void (*AI_Turnwise_Callback)(Environment*, Action*, int, void*);
+
+void step_turnwise(GameState *game, AI_Turnwise_Callback ai, void **data);
+
 #endif /* BITMARTYR_H */

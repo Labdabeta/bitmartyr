@@ -99,93 +99,45 @@ int main(int argc, char *argv[])
 }
 
 struct AI_Data {
-    /* These will both be NULL in basic format AIs */
-    FILE *results;
-    FILE *pipe;
-
+    char *command;
     char *fname;
 };
 
-Action load_ai(Environment e, void *fd)
+Action read_action(FILE *f)
 {
-    struct AI_Data *data = fd;
+    while (!feof(f)) {
+        char ch = fgetc(f);
 
-    if (data->results) {
-        /* Standard format. */
-        int i;
-        struct pollfd pollvar;
-        for (i = 0; i < 25; ++i) 
-            fprintf(data->pipe, "%d ", e[i]);
-
-        fflush(data->pipe);
-
-        pollvar.fd = fileno(data->results);
-        pollvar.events = POLLIN;
-        while (poll(&pollvar, 1, TIMEOUT_MS) > 0) {
-            clearerr(data->results);
-            char ch = fgetc(data->results);
-            
-            if (ch == EOF) {
-                clearerr(data->results);
-                continue;
-            }
-
-            switch (ch) {
-                case '*': case 'x': case 'X': case '5': return DIE;
-                case '.': case 's': case 'S': case '0': return STAY;
-                case '^': case 'u': case 'U': case '1': return UP;
-                case '>': case 'r': case 'R': case '2': return RIGHT;
-                case 'v': case 'd': case 'D': case '3': return DOWN;
-                case '<': case 'l': case 'L': case '4': return LEFT;
-            }
+        switch (ch) {
+            case '*': case 'x': case 'X': case '5': return DIE;
+            case '.': case 's': case 'S': case '0': return STAY;
+            case '^': case 'u': case 'U': case '1': return UP;
+            case '>': case 'r': case 'R': case '2': return RIGHT;
+            case 'v': case 'd': case 'D': case '3': return DOWN;
+            case '<': case 'l': case 'L': case '4': return LEFT;
         }
-            
-        return DIE;
-    } else {
-        /* Basic format. */
-        int i,retval;
-        FILE *pipe = NULL;
-        FILE *tmp = NULL;
-        char *tmpname = tmpnam(NULL);
-        char *command_str = malloc(strlen(data->fname) + strlen(" > ") + strlen(tmpname) + 1);
-        sprintf(command_str, "%s > %s", data->fname, tmpname);
-        
-        pipe = popen(command_str, "w");
-        free(command_str);
-        for (i = 0; i < 25; ++i)
-            fprintf(pipe, "%d ", e[i]);
-        
-        retval = WEXITSTATUS(pclose(pipe));
-
-        tmp = fopen(tmpname, "r");
-        while (!feof(tmp)) {
-            char ch = fgetc(tmp);
-
-            switch (ch) {
-                case '*': case 'x': case 'X': case '5': 
-                    fclose(tmp); remove(tmpname);
-                    return DIE;
-                case '.': case 's': case 'S': case '0': 
-                    fclose(tmp); remove(tmpname);
-                    return STAY;
-                case '^': case 'u': case 'U': case '1': 
-                    fclose(tmp); remove(tmpname);
-                    return UP;
-                case '>': case 'r': case 'R': case '2': 
-                    fclose(tmp); remove(tmpname);
-                    return RIGHT;
-                case 'v': case 'd': case 'D': case '3': 
-                    fclose(tmp); remove(tmpname);
-                    return DOWN;
-                case '<': case 'l': case 'L': case '4': 
-                    fclose(tmp); remove(tmpname);
-                    return LEFT;
-            }
-        }
-
-        fclose(tmp); remove(tmpname);
-        return retval;
     }
+    return DIE;
+}
+
+void load_ai(Environment *e, Action *a, int num_units, void *d)
+{
+    int i;
+    struct AI_Data *data = d;
+
+    FILE *f = popen(data->command, "w");
+
+    for (i = 0; i < num_units; ++i) {
+        int x;
+        for (x = 0; x < 25; ++x) 
+            fprintf(f, "%d ", e[i][x]);
+    }
+
+    fclose(f);
+
+    f = fopen(data->fname, "r");
+    for (i = 0; i < num_units; ++i)
+        a[i] = read_action(f);
 }
 
 struct AI_Data **load_ai_data(int num_ais, const char *ais[], int is_basic[])
@@ -193,25 +145,12 @@ struct AI_Data **load_ai_data(int num_ais, const char *ais[], int is_basic[])
     int i;
     struct AI_Data **ret = malloc(sizeof(struct AI_Data *) * num_ais);
     for (i = 0; i < num_ais; ++i) {
+        char *tmpname = tmpnam(NULL);
         ret[i] = malloc(sizeof(struct AI_Data));
-        if (is_basic[i]) {
-            ret[i]->results = NULL;
-            ret[i]->pipe = NULL;
-            ret[i]->fname = (char*)ais[i];
-        } else {
-            char *tmpname = tmpnam(NULL);
-            char *command_str = malloc(strlen(ais[i]) + strlen(" > ") + strlen(tmpname) + 1);
-            sprintf(command_str, "%s > %s", ais[i], tmpname);
-            ret[i]->pipe = popen(command_str, "w");
-
-            // Wait to be able to get the output file
-            while (!(ret[i]->results = fopen(tmpname, "r"))) {
-                sleep_ms(100);
-            }
-            ret[i]->fname = malloc(strlen(tmpname) + 1);
-            strcpy(ret[i]->fname, tmpname);
-            free(command_str);
-        }
+        ret[i]->command = malloc(strlen(ais[i]) + strlen(" > ") + strlen(tmpname) + 1);
+        sprintf(ret[i]->command, "%s > %s", ais[i], tmpname);
+        ret[i]->fname = malloc(strlen(tmpname) + 1);
+        strcpy(ret[i]->fname, tmpname);
     }
 
     return ret;
@@ -223,12 +162,9 @@ void free_ai_data(void **data, int num_ais)
     struct AI_Data **d = (struct AI_Data **)data;
 
     for (i = 0; i < num_ais; ++i) {
-        if (d[i]->results) {
-            fclose(d[i]->results);
-            remove(d[i]->fname);
-            free(d[i]->fname);
-        }
-        if (d[i]->pipe) fclose(d[i]->pipe);
+        remove(d[i]->fname);
+        free(d[i]->fname);
+        free(d[i]->command);
         free(d[i]);
     }
     free(d);
@@ -267,7 +203,7 @@ void run_game(int width, int height, int scale, int init_pop, int duration,
 
     render_game(game, gui, one_team_red, one_team_green, one_team_blue);
     for (i = 0; i < duration && !handle_events(); ++i) {
-        step(game, load_ai, data);
+        step_turnwise(game, load_ai, data);
         render_game(game, gui, one_team_red, one_team_green, one_team_blue);
         if (outname) {
             char *fname = malloc(strlen(outname) + 20);

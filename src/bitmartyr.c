@@ -184,3 +184,39 @@ void step(GameState *game, AI_Callback ai, void **data)
 
     apply_next_units(game);          
 }
+
+void step_turnwise(GameState *game, AI_Turnwise_Callback ai, void **data)
+{
+    int team;
+
+    clear_next_units(game);
+
+    for (team = 0; team < game->num_teams; ++team) {
+        int x,y,i;
+        int num_units = get_num_units(game, team);
+        Environment *args = malloc(sizeof(Environment) * num_units);
+        Action *acts = malloc(sizeof(Action) * num_units);
+
+        i = 0;
+        for (y = 0; y < game->height; ++y) {
+            for (x = 0; x < game->width; ++x) {
+                if (game->units[y * game->width + x].team == team)
+                    load_environment(game, args[i++], x, y);
+            }
+        }
+
+        ai(args, acts, num_units, data[team]);
+
+        i = 0;
+        for (y = 0; y < game->height; ++y) {
+            for (x = 0; x < game->width; ++x) {
+                if (game->units[y * game->width + x].team == team)
+                    apply_action(game, x, y, acts[i++]);
+            }
+        }
+        free(args);
+        free(acts);
+    }
+
+    apply_next_units(game);
+}
