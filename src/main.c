@@ -126,6 +126,11 @@ void load_ai(Environment *e, Action *a, int num_units, void *d)
     struct AI_Data *data = d;
 
     FILE *f = popen(data->command, "w");
+    if (!f) {
+        printf("Couldn't run %s!\n", data->command);
+        perror("because");
+        return;
+    }
 
     for (i = 0; i < num_units; ++i) {
         int x;
@@ -136,8 +141,14 @@ void load_ai(Environment *e, Action *a, int num_units, void *d)
     fclose(f);
 
     f = fopen(data->fname, "r");
+    if (!f) {
+        printf("Couldn't open %s!\n", data->fname);
+        perror("because");
+        return;
+    }
     for (i = 0; i < num_units; ++i)
         a[i] = read_action(f);
+    fclose(f);
 }
 
 struct AI_Data **load_ai_data(int num_ais, const char *ais[], int is_basic[])
